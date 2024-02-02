@@ -1,0 +1,9 @@
+#header #title {
+  width: 25%;
+  height: 25%;
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+}
