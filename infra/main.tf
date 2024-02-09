@@ -92,3 +92,23 @@ locals {
 #   role       = aws_iam_role.lambda.name
 #   policy_arn = aws_iam_policy.logs.arn
 # }
+
+resource "aws_dynamodb_table" "db" {
+  name         = "beyond-test"
+  billing_mode = "PROVISIONED"
+
+  # up to 8KB read per second (eventually consistent)
+  read_capacity = 1
+
+  # up to 1KB per second
+  write_capacity = 1
+
+  hash_key = "username"
+
+  attribute {
+    name = "username"
+    type = "S"    # type string
+  }
+
+  # (More attributes can be added as data is added to the database) 
+}
