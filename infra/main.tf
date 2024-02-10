@@ -92,10 +92,8 @@ locals {
 #   policy_arn = aws_iam_policy.logs.arn
 # }
 
-resource "aws_s3_bucket" "lambda" {}
-
 resource "aws_iam_policy" "dynamo" {
-  name = "lambda_dynamo"
+  name = "beyond_dynamo"
   description = "Interaction with lambda and dynamo"
 
   policy = <<EOF
@@ -114,7 +112,7 @@ resource "aws_iam_policy" "dynamo" {
 				"dynamodb:UpdateItem",
         "dynamodb:DeleteItem"
       ],
-      "Resource": "arn:aws:dynamodb:ca-central-1:455720929055:table/lotion-30145805"
+      "Resource": "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-test"
     }
   ]
 }
@@ -123,7 +121,7 @@ EOF
 
 
 resource "aws_iam_policy" "logs" {
-  name        = "lambda-logging"
+  name        = "beyond-logging"
   description = "IAM policy for logging from a lambda"
 
   policy = <<EOF
@@ -185,13 +183,13 @@ resource "aws_dynamodb_table" "db" {
 }
 
 resource "aws_lambda_function" "get-user" {
-  s3_bucket     = aws_s3_bucket.lambda.bucket
-  s3_key        = "beyond-seng401/get-user.zip"
+  # s3_bucket     = aws_s3_bucket.lambda.bucket
+  # s3_key        = "beyond-seng401/get-user.zip"
   role          = aws_iam_role.get-user.arn
   function_name = "get-user"
   handler       = local.lambda_handler
   //memory_size   = "128"
-  //filename      = "functions/get-note/artifact.zip"
+  filename      = "../functions/get-user/get-user.zip"
   //source_code_hash = data.archive_file.lambda.output_base64sha256
 
   runtime = "python3.7"
