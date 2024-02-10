@@ -222,3 +222,65 @@ resource "aws_lambda_function_url" "get-user-url" {
 output "get-lambda_url" {
   value = aws_lambda_function_url.get-user-url.function_url
 }
+
+
+# delete user resources
+
+resource "aws_iam_role" "delete-user" {
+  name                = "iam-for-lambda-delete-user"
+  assume_role_policy  = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "lambda.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+  }
+]
+}
+EOF
+}
+
+resource "aws_lambda_function" "delete-user" {
+  # s3_bucket     = aws_s3_bucket.lambda.bucket
+  # s3_key        = "beyond-seng401/get-user.zip"
+  role          = aws_iam_role.delete-user.arn
+  function_name = "delete-user"
+  handler       = local.lambda_handler
+  //memory_size   = "128"
+  filename      = "../functions/delete-user/delete-user.zip"
+  //source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  runtime = "python3.7"
+}
+
+resource "aws_iam_role_policy_attachment" "delete-user_logs" {
+  role       = aws_iam_role.delete-user.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "delete-user_dynamo" {
+  role       = aws_iam_role.delete-user.name
+  policy_arn = aws_iam_policy.dynamo.arn
+}
+
+resource "aws_lambda_function_url" "delete-user-url" {
+  function_name      = aws_lambda_function.delete-user.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["DELETE"]
+    allow_headers     = ["*"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+output "delete-lambda_url" {
+  value = aws_lambda_function_url.delete-user-url.function_url
+}
