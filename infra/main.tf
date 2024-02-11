@@ -178,12 +178,6 @@ resource "aws_dynamodb_table" "db" {
     name = "email"
     type = "S"    # type string
   }
-
-  attribute {
-    name = "username"
-    type = "S"
-  }
-
   # (More attributes can be added as data is added to the database) 
 }
 
