@@ -172,11 +172,16 @@ resource "aws_dynamodb_table" "db" {
   # up to 1KB per second
   write_capacity = 1
 
-  hash_key = "username"
+  hash_key = "email"
+
+  attribute {
+    name = "email"
+    type = "S"    # type string
+  }
 
   attribute {
     name = "username"
-    type = "S"    # type string
+    type = "S"
   }
 
   # (More attributes can be added as data is added to the database) 
