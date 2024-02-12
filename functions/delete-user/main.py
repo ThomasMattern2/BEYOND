@@ -6,9 +6,10 @@ from urllib.parse import parse_qs
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("beyond-test")
 
+# change to email if needed
 def exsists(username):
     response = table.query(
-        KeyConditionExpression=boto3.dynamodb.conditions.Key('username').eq(username)
+        KeyConditionExpression=boto3.dynamodb.conditions.Key('username').eq(str(username))
     )
     # response idk yet
     return len(response['Items']) > 0
@@ -20,7 +21,8 @@ def lambda_handler(event, context):
     if http_method == "delete":
 
         query = parse_qs(event["rawQueryString"])
-        username = query['username']
+        username = query['username'][0]
+        print(username) # format of ['username'] change to username
         if not exsists(username):
             return {
                 'statusCode': 401,
