@@ -289,3 +289,64 @@ resource "aws_lambda_function_url" "delete-user-url" {
 output "delete-lambda_url" {
   value = aws_lambda_function_url.delete-user-url.function_url
 }
+
+# create user resources
+
+resource "aws_iam_role" "create-user" {
+  name                = "iam-for-lambda-create-user"
+  assume_role_policy  = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "lambda.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+  }
+]
+}
+EOF
+}
+
+resource "aws_lambda_function" "create-user" {
+  # s3_bucket     = aws_s3_bucket.lambda.bucket
+  # s3_key        = "beyond-seng401/create-user.zip"
+  role          = aws_iam_role.create-user.arn
+  function_name = "create-user"
+  handler       = local.lambda_handler
+  //memory_size   = "128"
+  filename      = "../functions/create-user/create-user.zip"
+  //source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  runtime = "python3.7"
+}
+
+resource "aws_iam_role_policy_attachment" "create-user_logs" {
+  role       = aws_iam_role.create-user.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "create-user_dynamo" {
+  role       = aws_iam_role.create-user.name
+  policy_arn = aws_iam_policy.dynamo.arn
+}
+
+resource "aws_lambda_function_url" "create-user-url" {
+  function_name      = aws_lambda_function.create-user.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["POST"]
+    allow_headers     = ["*"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+output "create-lambda_url" {
+  value = aws_lambda_function_url.create-user-url.function_url
+}
