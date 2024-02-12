@@ -163,28 +163,17 @@ EOF
 
 
 resource "aws_dynamodb_table" "db" {
-  name         = "beyond-test"
-  billing_mode = "PROVISIONED"
-
-  # up to 8KB read per second (eventually consistent)
-  read_capacity = 1
-
-  # up to 1KB per second
+  name           = "beyond-test"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
   write_capacity = 1
 
   hash_key = "email"
-  range_key = "username"  # Adding sort key (range key)
 
   attribute {
-    name = "email"  # Adding email attribute
-    type = "S"     # type string
+    name = "email"
+    type = "S"
   }
-  attribute {
-    name = "username"  # Adding username attribute
-    type = "S"         # type string
-  }
-
-  # (More attributes can be added as data is added to the database) 
 }
 
 resource "aws_lambda_function" "get-user" {
