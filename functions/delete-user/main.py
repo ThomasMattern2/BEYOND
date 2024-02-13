@@ -1,58 +1,60 @@
-import boto3
 import json
-import requests
 from urllib.parse import parse_qs
+import boto3
+from botocore.exceptions import ClientError
 
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("beyond-test")
 
-def exsists(username):
-    response = table.query(
-        KeyConditionExpression=boto3.dynamodb.conditions.Key('username').eq(username)
-    )
-    # response idk yet
-    return len(response['Items']) > 0
+def exists(email):
+    try:
+        response = table.query(
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('email').eq(str(email)) 
+        )
+        return len(response['Items']) > 0
+    except ClientError as e:
+        print(f"Error querying DynamoDB: {e}")
+        return False
 
 def lambda_handler(event, context):
-    
     http_method = event["requestContext"]["http"]["method"].lower()
-    
-    if http_method == "delete":
 
+    if http_method == "delete":
         query = parse_qs(event["rawQueryString"])
-        username = query['username']
-        if not exsists(username):
+        email = query.get('email', [''])[0]
+
+        if not email:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'error': 'Email or username parameter is missing'})
+            }
+
+        if not exists(email):
             return {
                 'statusCode': 401,
                 'body': json.dumps({'error': 'Unauthorized'})
             }
-        try:    
+
+        try:
             response = table.delete_item(
                 Key={
-                    # any id other id or email in db
-                    'username': username,
+                    'email': str(email),
                 }
             )
-
             return {
                 'statusCode': 200,
                 'body': json.dumps({'message': 'User deleted successfully'})
             }
-        except Exception as e:
-            print(e)
+        except ClientError as e:
+            print(f"Error deleting item from DynamoDB: {e}")
             return {
                 'statusCode': 500,
                 'body': json.dumps({'error': 'Failed to delete user'})
             }
-            
+
     else:
-        # Return a 404 error if the request was not delete
         return {
-                "statusCode": 404,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "body": json.dumps({
-                    "error": "Item not found"
-                })
-            }
+            "statusCode": 404,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": "Item not found"})
+        }
