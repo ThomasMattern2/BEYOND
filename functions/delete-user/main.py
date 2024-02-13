@@ -6,11 +6,10 @@ from botocore.exceptions import ClientError
 dynamodb_resource = boto3.resource("dynamodb")
 table = dynamodb_resource.Table("beyond-test")
 
-def exists(email, username):
+def exists(email):
     try:
         response = table.query(
-            KeyConditionExpression=boto3.dynamodb.conditions.Key('email').eq(str(email)) &
-                                  boto3.dynamodb.conditions.Key('username').eq(str(username))
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('email').eq(str(email)) 
         )
         return len(response['Items']) > 0
     except ClientError as e:
@@ -23,15 +22,14 @@ def lambda_handler(event, context):
     if http_method == "delete":
         query = parse_qs(event["rawQueryString"])
         email = query.get('email', [''])[0]
-        username = query.get('username', [''])[0]
 
-        if not email or not username:
+        if not email:
             return {
                 'statusCode': 400,
                 'body': json.dumps({'error': 'Email or username parameter is missing'})
             }
 
-        if not exists(email, username):
+        if not exists(email):
             return {
                 'statusCode': 401,
                 'body': json.dumps({'error': 'Unauthorized'})
@@ -41,7 +39,6 @@ def lambda_handler(event, context):
             response = table.delete_item(
                 Key={
                     'email': str(email),
-                    'username': str(username)
                 }
             )
             return {
