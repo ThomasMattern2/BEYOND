@@ -18,9 +18,8 @@ def email_exists(email):
 
 def username_exists(username):
     try:
-        response = table.query(
-            IndexName='username-index',
-            KeyConditionExpression=boto3.dynamodb.conditions.Key('username').eq(str(username))
+        response = table.scan(
+            FilterExpression=boto3.dynamodb.conditions.Attr('username').eq(str(username))
         )
         return len(response['Items']) > 0
     except ClientError as e:
@@ -28,27 +27,25 @@ def username_exists(username):
         return False
 
 def create_user(email, username):
-    if not email_exists(email):
+    if not email_exists(email) and not username_exists(username):
         try:
-            # Check if the username already exists using the global secondary index
-            if username_exists(username):
-                return False
-
-            # If not, create the user
+            # Create the user
             table.put_item(
                 Item={
                     'email': str(email),
                     'username': str(username)
                 },
-                ConditionExpression='attribute_not_exists(email)'  # Ensure email is unique
+                ConditionExpression='attribute_not_exists(username)'  # Ensure username is unique
             )
             return True
         except ClientError as e:
             if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
-                # This exception is raised when the condition expression fails (email already exists)
+                # This exception is raised when the condition expression fails (username already exists)
                 return False
             print(f"Error creating user in DynamoDB: {e}")
     return False
+
+
 def lambda_handler(event, context):
     http_method = event["requestContext"]["http"]["method"].lower()
 
