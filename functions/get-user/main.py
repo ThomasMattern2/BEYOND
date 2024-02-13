@@ -14,20 +14,20 @@ def lambda_handler(event, context):
         query = parse_qs(event["rawQueryString"])
         email = query['email'][0]
         print(email)
-        access_token = event["headers"]["access_token"]
+        #access_token = event["headers"]["access_token"]
         # verify user is authenticated
-        headers = {"Authorization": f"Bearer {access_token}"}
-        response = requests.get("https://oauth2.googleapis.com/tokeninfo", headers= headers) #if we use google auth
-        if response.status_code != 200:
-            return {
-                "statusCode": 401,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "body": json.dumps({
-                    "error": "User is not authenticated"
-                })
-            }
+        #headers = {"Authorization": f"Bearer {access_token}"}
+        #response = requests.get("https://oauth2.googleapis.com/tokeninfo", headers= headers) #if we use google auth
+        # if response.status_code != 200:
+        #     return {
+        #         "statusCode": 401,
+        #         "headers": {
+        #             "Content-Type": "application/json"
+        #         },
+        #         "body": json.dumps({
+        #             "error": "User is not authenticated"
+        #         })
+        #     }
         response = table.scan(
             FilterExpression = 'email = :email',
             ExpressionAttributeValues ={':email': email}

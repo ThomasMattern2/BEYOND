@@ -172,8 +172,9 @@ resource "aws_dynamodb_table" "db" {
 
   attribute {
     name = "email"
-    type = "S"
+    type = "S"    # type string
   }
+  # (More attributes can be added as data is added to the database) 
 }
 
 resource "aws_lambda_function" "get-user" {
