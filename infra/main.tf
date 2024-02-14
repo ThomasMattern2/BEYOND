@@ -187,7 +187,7 @@ resource "aws_lambda_function" "get-user" {
   filename      = "../functions/get-user/get-user.zip"
   //source_code_hash = data.archive_file.lambda.output_base64sha256
 
-  runtime = "python3.7"
+  runtime = "python3.12"
 }
 
 
@@ -250,7 +250,7 @@ resource "aws_lambda_function" "delete-user" {
   filename      = "../functions/delete-user/delete-user.zip"
   //source_code_hash = data.archive_file.lambda.output_base64sha256
 
-  runtime = "python3.7"
+  runtime = "python3.12"
 }
 
 resource "aws_iam_role_policy_attachment" "delete-user_logs" {
@@ -311,7 +311,7 @@ resource "aws_lambda_function" "create-user" {
   filename      = "../functions/create-user/create-user.zip"
   //source_code_hash = data.archive_file.lambda.output_base64sha256
 
-  runtime = "python3.7"
+  runtime = "python3.12"
 }
 
 resource "aws_iam_role_policy_attachment" "create-user_logs" {
