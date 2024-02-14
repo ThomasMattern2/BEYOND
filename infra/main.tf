@@ -112,7 +112,7 @@ resource "aws_iam_policy" "dynamo" {
 				"dynamodb:UpdateItem",
         "dynamodb:DeleteItem"
       ],
-      "Resource": "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-test"
+      "Resource": "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-users"
     }
   ]
 }
@@ -163,7 +163,7 @@ EOF
 
 
 resource "aws_dynamodb_table" "db" {
-  name           = "beyond-test"
+  name           = "beyond-users"
   billing_mode   = "PROVISIONED"
   read_capacity  = 1
   write_capacity = 1
