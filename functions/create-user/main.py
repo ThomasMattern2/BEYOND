@@ -4,7 +4,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 dynamodb_resource = boto3.resource("dynamodb")
-table = dynamodb_resource.Table("beyond-test")
+table = dynamodb_resource.Table("beyond-users")
 
 def email_exists(email):
     try:

@@ -4,7 +4,7 @@ import requests
 from urllib.parse import parse_qs
 
 dynamodb_resource = boto3.resource("dynamodb")
-table = dynamodb_resource.Table("beyond-test")
+table = dynamodb_resource.Table("beyond-users")
 
 
 def lambda_handler(event, context):
