@@ -35,6 +35,7 @@ def lambda_handler(event, context):
         for item in response:
             print(item)
         print(response)
+
         return {
             "statusCode": 200,
             "headers": {

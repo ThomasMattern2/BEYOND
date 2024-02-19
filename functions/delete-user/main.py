@@ -20,8 +20,11 @@ def lambda_handler(event, context):
     http_method = event["requestContext"]["http"]["method"].lower()
 
     if http_method == "delete":
+        print(event)
         query = parse_qs(event["rawQueryString"])
         email = query.get('email', [''])[0]
+
+        print(query)
 
         if not email:
             return {
