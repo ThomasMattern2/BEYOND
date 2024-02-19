@@ -27,7 +27,7 @@ def username_exists(username):
         print(f"Error querying DynamoDB for username: {e}")
         return False
     
-def hash_password(password, rounds=5):  # Adjust the rounds as necessary
+def hash_password(password, rounds=5):  # Adjust the rounds as necessary. Too many rounds were resulting in timeouts
     if password:
         salt = bcrypt.gensalt(rounds=rounds)
         return bcrypt.hashpw(password.encode(), salt).decode()
@@ -68,7 +68,7 @@ def lambda_handler(event, context):
         profilePicture = query.get('profilePicture', [''])[0]
         firstName = query.get('firstName', [''])[0]
         lastName = query.get('lastName', [''])[0]
-        print(f'{email}  and user {username}')
+        print(f'{email}  and user {username} and password {password}')
         if not email or not firstName or not lastName:
             return {
                 'statusCode': 400,
