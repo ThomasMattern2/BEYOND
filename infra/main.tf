@@ -105,7 +105,7 @@ resource "aws_lambda_function" "get-user" {
   role          = aws_iam_role.get-user.arn
   function_name = "get-user"
   handler       = local.lambda_handler
-  filename      = "../functions/get-user/get-user.zip"
+  filename      = "../functions/get-user/dist/get-user.zip"
 
   runtime = "python3.12"
 }
@@ -164,7 +164,7 @@ resource "aws_lambda_function" "delete-user" {
   role          = aws_iam_role.delete-user.arn
   function_name = "delete-user"
   handler       = local.lambda_handler
-  filename      = "../functions/delete-user/delete-user.zip"
+  filename      = "../functions/delete-user/dist/delete-user.zip"
 
   runtime = "python3.12"
 }
@@ -221,7 +221,7 @@ resource "aws_lambda_function" "create-user" {
   role          = aws_iam_role.create-user.arn
   function_name = "create-user"
   handler       = local.lambda_handler
-  filename      = "../functions/create-user/create-user.zip"
+  filename      = "../functions/create-user/dist/create-user.zip"
 
   runtime = "python3.12"
 }
