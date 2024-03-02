@@ -33,7 +33,7 @@ def hash_password(password, rounds=5):  # Adjust the rounds as necessary. Too ma
         return bcrypt.hashpw(password.encode(), salt).decode()
     return None
 
-def create_user(email, username, password, profilePicture, firstName, lastName):
+def create_user(email, username, password, firstName, lastName):
     if not email_exists(email) and not username_exists(username):
         try:
             # Create the user
@@ -42,7 +42,6 @@ def create_user(email, username, password, profilePicture, firstName, lastName):
                     'email': str(email),
                     'username': str(username),
                     'password': str(password),
-                    'profilePicture': str(profilePicture),
                     'firstName': str(firstName),
                     'lastName': str(lastName)
                 },
@@ -65,16 +64,15 @@ def lambda_handler(event, context):
         email = query.get('email', [''])[0]
         username = query.get('username', [''])[0]
         password = query.get('password', [''])[0]
-        profilePicture = query.get('profilePicture', [''])[0]
         firstName = query.get('firstName', [''])[0]
         lastName = query.get('lastName', [''])[0]
         print(f'{email}  and user {username} and password {password}')
-        if not email or not firstName or not lastName:
+        if not email or not firstName or not lastName or not password or not username:
             return {
                 'statusCode': 400,
-                'body': json.dumps({'error': 'Email, username, first name, or last name parameter is missing'})
+                'body': json.dumps({'error': 'Email, username, password, first name, or last name parameter is missing'})
             }
-        if create_user(email, username, hash_password(password), profilePicture, firstName, lastName):
+        if create_user(email, username, hash_password(password), firstName, lastName):
             return {
                 'statusCode': 201,
                 'body': json.dumps({'message': 'User created successfully'})
