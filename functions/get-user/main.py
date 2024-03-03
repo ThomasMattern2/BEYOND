@@ -78,7 +78,7 @@ def lambda_handler(event, context):
 
     if http_method == "get":
         # Parse the JSON body to extract the email, password, and isGoogle flag.
-        query = json.loads(event["body"])
+        query = event["queryStringParameters"]
         print(query)
         email = query.get('email')
         password = query.get('password')
@@ -107,7 +107,7 @@ def lambda_handler(event, context):
         else:
             # Handle regular password authentication.
             hashed_password = response[0].get('password')
-            if not authenticate_user(password, hashed_password) or response[0].get('isGoogle').lower() == "true":
+            if not authenticate_user(password, hashed_password) or response[0].get('isGoogle'):
                 # Password does not match or the account is a Google account.
                 return {
                     "statusCode": 401,
