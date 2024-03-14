@@ -6,6 +6,19 @@ dynamodb_resource = boto3.resource("dynamodb")
 # Connect to the specific DynamoDB table we're working with.
 table = dynamodb_resource.Table("beyond-objects")
 
+def get_all_objects():
+    """
+    Queries the DynamoDB table for all objects.
+    
+    Returns:
+    - list: A list of all objects in the table.
+    """
+    try:
+        # Scan the table for all items.
+        response = table.scan()
+        return response['Items']
+    except Exception as e:
+        return {"error": str(e)}
 
 def lambda_handler(event, context):
     """
