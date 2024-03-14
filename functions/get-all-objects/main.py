@@ -1,4 +1,4 @@
-import json
+import simplejson as json
 import boto3
 
 # Initialize a DynamoDB resource using the boto3 library.
