@@ -91,10 +91,10 @@ resource "aws_dynamodb_table" "db-objects" {
   read_capacity  = 1
   write_capacity = 1
 
-  hash_key = "NGC"
+  hash_key = "ngc"
 
   attribute {
-    name = "NGC"
+    name = "ngc"
     type = "N"    # type number
   }
   # (More attributes can be added as data is added to the database) 
