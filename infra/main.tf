@@ -36,7 +36,10 @@ resource "aws_iam_policy" "dynamo" {
 				"dynamodb:UpdateItem",
         "dynamodb:DeleteItem"
       ],
-      "Resource": "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-users"
+      "Resource": [
+        "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-users",
+        "arn:aws:dynamodb:ca-central-1:455720929055:table/beyond-objects"
+      ]
     }
   ]
 }
