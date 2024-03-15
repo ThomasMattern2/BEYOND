@@ -86,7 +86,7 @@ def create_user(email, username, password, firstName, lastName, isGoogle):
                     'password': str(password),
                     'firstName': str(firstName),
                     'lastName': str(lastName),
-                    'isGoogle': isGoogle
+                    'isGoogle': bool(isGoogle)
                 },
                 ConditionExpression='attribute_not_exists(username)'  # Ensures username does not already exist.
             )
@@ -123,7 +123,7 @@ def lambda_handler(event, context):
         isGoogle = query.get('isGoogle', [''])
         
         # Check if all required fields are present.
-        if not email or not firstName or not lastName or not password or not username or not isGoogle:
+        if not email or not firstName or not lastName or not password or not username or isGoogle is None:
             return {
                 'statusCode': 400,
                 'body': json.dumps({'error': 'Email, username, password, first name, isGoogle, or last name parameter is missing'})

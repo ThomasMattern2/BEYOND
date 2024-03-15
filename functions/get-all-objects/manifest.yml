@@ -1,0 +1,6 @@
+functions:
+  get-all-objects:
+    image: lambci/lambda:build-python3.7
+    requirements: ./requirements.txt
+    include:
+      - ./main.py
