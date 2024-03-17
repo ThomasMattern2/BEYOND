@@ -1,6 +1,7 @@
 import json
 from urllib.parse import parse_qs
 import boto3
+import decimal
 
 # Initialize a DynamoDB resource using the boto3 library.
 dynamodb_resource = boto3.resource("dynamodb")
@@ -43,9 +44,7 @@ def lambda_handler(event, context):
         print(event)
         query = event["queryStringParameters"]
         email = query.get('email')
-        ngc = query.get('ngc')
-
-
+        ngc = decimal.Decimal(query.get('ngc'))
 
         # Check if the email parameter was provided.
         if not email or not ngc:
@@ -68,6 +67,7 @@ def lambda_handler(event, context):
             )
             user = response.get("Item", {})
             favourites = user.get("favourites", [])
+            print(favourites)
             if ngc in favourites:
                 favourites.remove(ngc)
                 table.update_item(

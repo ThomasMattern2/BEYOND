@@ -1,5 +1,5 @@
 functions:
-  delete-favourites:
+  delete-favourite:
     image: lambci/lambda:build-python3.7
     requirements: ./requirements.txt
     include:
