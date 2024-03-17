@@ -560,3 +560,59 @@ resource "aws_lambda_function_url" "get-favourites-url" {
 output "get-favourites_url" {
   value = aws_lambda_function_url.get-favourites-url.function_url
 }
+
+# delete-favourite resources
+resource "aws_iam_role" "delete-favourite" {
+  name                = "iam-for-lambda-delete-favourite"
+  assume_role_policy  = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "lambda.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+  }
+]
+}
+EOF
+}
+
+resource "aws_lambda_function" "delete-favourite" {
+  role          = aws_iam_role.delete-favourite.arn
+  function_name = "delete-favourite"
+  handler       = local.lambda_handler
+  filename      = "../functions/delete-favourite/dist/delete-favourite.zip"
+
+  runtime = "python3.12"
+}
+
+resource "aws_iam_role_policy_attachment" "delete-favourite_logs" {
+  role       = aws_iam_role.delete-favourite.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "delete-favourite_dynamo" {
+  role       = aws_iam_role.delete-favourite.name
+  policy_arn = aws_iam_policy.dynamo.arn
+}
+
+resource "aws_lambda_function_url" "delete-favourite-url" {
+  function_name      = aws_lambda_function.delete-favourite.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["DELETE"]
+    allow_headers     = ["*"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+output "delete-favourite-lambda_url" {
+  value = aws_lambda_function_url.delete-favourite-url.function_url
+}
