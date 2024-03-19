@@ -616,3 +616,59 @@ resource "aws_lambda_function_url" "delete-favourite-url" {
 output "delete-favourite-lambda_url" {
   value = aws_lambda_function_url.delete-favourite-url.function_url
 }
+
+# edit-user resources
+resource "aws_iam_role" "edit-user" {
+  name                = "iam-for-lambda-edit-user"
+  assume_role_policy  = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "lambda.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+  }
+]
+}
+EOF
+}
+
+resource "aws_lambda_function" "edit-user" {
+  role          = aws_iam_role.edit-user.arn
+  function_name = "edit-user"
+  handler       = local.lambda_handler
+  filename      = "../functions/edit-user/dist/edit-user.zip"
+
+  runtime = "python3.12"
+}
+
+resource "aws_iam_role_policy_attachment" "edit-user_logs" {
+  role       = aws_iam_role.edit-user.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "edit-user_dynamo" {
+  role       = aws_iam_role.edit-user.name
+  policy_arn = aws_iam_policy.dynamo.arn
+}
+
+resource "aws_lambda_function_url" "edit-user-url" {
+  function_name      = aws_lambda_function.edit-user.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["POST"]
+    allow_headers     = ["*"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+output "edit-user-lambda_url" {
+  value = aws_lambda_function_url.edit-user-url.function_url
+}

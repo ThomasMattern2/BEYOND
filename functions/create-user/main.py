@@ -86,7 +86,8 @@ def create_user(email, username, password, firstName, lastName, isGoogle):
                     'password': str(password),
                     'firstName': str(firstName),
                     'lastName': str(lastName),
-                    'isGoogle': bool(isGoogle)
+                    'isGoogle': bool(isGoogle),
+                    'profilePic': ''
                 },
                 ConditionExpression='attribute_not_exists(username)'  # Ensures username does not already exist.
             )
