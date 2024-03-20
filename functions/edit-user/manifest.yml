@@ -1,0 +1,6 @@
+functions:
+  edit-user:
+    image: lambci/lambda:build-python3.7
+    requirements: ./requirements.txt
+    include:
+      - ./main.py

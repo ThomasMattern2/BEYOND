@@ -119,12 +119,15 @@ def lambda_handler(event, context):
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"username": response[0].get("username")})
+            "body": json.dumps({
+                "username": response[0].get("username"),
+                "profilePic": response[0].get("profilePic")
+                })
         }
     else:
         # If the request method is not GET, return a 404 error.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Item not found"})
+            "body": json.dumps({"error": "Invalid HTTP method"})
         }

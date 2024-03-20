@@ -86,15 +86,15 @@ def create_user(email, username, password, firstName, lastName, isGoogle):
                     'password': str(password),
                     'firstName': str(firstName),
                     'lastName': str(lastName),
-                    'isGoogle': bool(isGoogle)
+                    'isGoogle': bool(isGoogle),
+                    'profilePic': ''
                 },
                 ConditionExpression='attribute_not_exists(username)'  # Ensures username does not already exist.
             )
             return True
         except ClientError as e:
-            if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
-                return False
             print(f"Error creating user in DynamoDB: {e}")
+            return False
     return False
 
 def lambda_handler(event, context):
@@ -136,13 +136,13 @@ def lambda_handler(event, context):
             }
         else:
             return {
-                'statusCode': 500,
-                'body': json.dumps({'error': 'Failed to create user'})
+                'statusCode': 400,
+                'body': json.dumps({'error': 'Failed to create user. Username or email already exists.'})
             }
     else:
         # Handle unsupported HTTP methods.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"error": "Invalid HTTP method"})
         }

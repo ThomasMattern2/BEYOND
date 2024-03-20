@@ -16,7 +16,8 @@ def get_all_objects():
     try:
         # Scan the table for all items.
         response = table.scan()
-        return response['Items']
+        # Return the list of items with only the desired columns.
+        return [{k: v for k, v in item.items() if k not in ["name", "type", "collection"]} for item in response["Items"]]
     except Exception as e:
         return {"error": str(e)}
 
@@ -37,6 +38,13 @@ def lambda_handler(event, context):
     if http_method == "get":
         # Query all objects from the database.
         response = get_all_objects()
+        # Check if the response is an error.
+        if "error" in response:
+            return {
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps(response)
+            }
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},

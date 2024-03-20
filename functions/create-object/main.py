@@ -61,13 +61,21 @@ def lambda_handler(event, context):
             )
             response = {"message": "Object created successfully"}
         except dynamodb_resource.meta.client.exceptions.ConditionalCheckFailedException:
-            response = {"error": "Object with this NGC already exists"}
+            return{
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "error": "Object with this NGC already exists"
+            }
         except Exception as e:
-            response = {"error": f"Failed to create object: {e}"}
+            response = {
+                "statusCode": 500,
+                "headers": {"Content-Type": "application/json"},
+                "error": f"Failed to create object: {e}"
+            }
 
         
         return {
-            "statusCode": 200,
+            "statusCode": 201,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps(response)
         }

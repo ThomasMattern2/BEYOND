@@ -2,6 +2,7 @@ import json
 from urllib.parse import parse_qs
 import boto3
 import decimal
+from botocore.exceptions import ClientError
 
 # Initialize a DynamoDB resource using the boto3 library.
 dynamodb_resource = boto3.resource("dynamodb")
@@ -56,7 +57,7 @@ def lambda_handler(event, context):
         # Verify that the email exists before attempting to delete.
         if not exists(email):  # Corrected to access the first item of the list.
             return {
-                'statusCode': 401,
+                'statusCode': 404,
                 'body': json.dumps({'error': 'User not found'})  # Email not found
             }
 
@@ -92,7 +93,7 @@ def lambda_handler(event, context):
     else:
         # Respond with error if the HTTP method is not supported.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Item not found"})  # More accurate error would be "Method not allowed"
+            "body": json.dumps({"error": "Invalid HTTP Method"})
         }

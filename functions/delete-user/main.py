@@ -57,7 +57,7 @@ def lambda_handler(event, context):
         # Verify that the email exists before attempting to delete.
         if not exists(email):  # Corrected to access the first item of the list.
             return {
-                'statusCode': 401,
+                'statusCode': 404,
                 'body': json.dumps({'error': 'User not found'})  # Email not found
             }
 
@@ -75,13 +75,13 @@ def lambda_handler(event, context):
         except ClientError as e:
             print(f"Error deleting item from DynamoDB: {e}")
             return {
-                'statusCode': 500,
+                'statusCode': 400,
                 'body': json.dumps({'error': 'Failed to delete user'})
             }
     else:
         # Respond with error if the HTTP method is not supported.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Item not found"})  # More accurate error would be "Method not allowed"
+            "body": json.dumps({"error": "Invalid HTTP Method"}) 
         }
