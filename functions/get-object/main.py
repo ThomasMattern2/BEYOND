@@ -22,7 +22,9 @@ def get_object(ngc):
             KeyConditionExpression='ngc = :ngc',
             ExpressionAttributeValues={':ngc': int(ngc)}
         )
-        return response['Items']
+        if len(response['Items']) == 0:
+            return {"error": "No object found with the specified NGC"}
+        return response['Items'][0]
     except Exception as e:
         return {"error": str(e)}
 
@@ -48,6 +50,13 @@ def lambda_handler(event, context):
         ngc = query.get('ngc')
         # Query all objects from the database.
         response = get_object(ngc)
+        # Check if the response is an error.
+        if "error" in response:
+            return {
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps(response)
+            }
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},

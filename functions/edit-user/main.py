@@ -184,13 +184,13 @@ def lambda_handler(event, context):
             }
         else:
             return {
-                'statusCode': 500,
+                'statusCode': 400,
                 'body': json.dumps({'error': 'Failed to edit user'})
             }
     else:
         # Handle unsupported HTTP methods.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"error": "Invalid HTTP method"})
         }

@@ -38,6 +38,13 @@ def lambda_handler(event, context):
     if http_method == "get":
         # Query all objects from the database.
         response = get_all_objects()
+        # Check if the response is an error.
+        if "error" in response:
+            return {
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps(response)
+            }
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},

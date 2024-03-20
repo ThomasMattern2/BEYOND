@@ -127,7 +127,7 @@ def lambda_handler(event, context):
     else:
         # If the request method is not GET, return a 404 error.
         return {
-            "statusCode": 404,
+            "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Item not found"})
+            "body": json.dumps({"error": "Invalid HTTP method"})
         }

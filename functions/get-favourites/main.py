@@ -34,10 +34,14 @@ def lambda_handler(event, context):
             return {
                 "statusCode": 200,
                 "headers": {"Content-Type": "application/json"},
-                "body": json.dumps(response)
+                "body": json.dumps({"favourites": response})
             }
         except Exception as e:
-            return {"error": str(e)}
+            return {
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "error": str(e)
+                }
     else:
         return {
             "statusCode": 405,
