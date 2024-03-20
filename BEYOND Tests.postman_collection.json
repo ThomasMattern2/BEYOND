@@ -1,0 +1,1817 @@
+{
+	"info": {
+		"_postman_id": "efb4c521-507b-4a8b-b952-53d43dc6b2d1",
+		"name": "BEYOND Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32899795"
+	},
+	"item": [
+		{
+			"name": "User Tests",
+			"item": [
+				{
+					"name": "Test Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 201",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.ca\",\r\n    \"username\": \"test\",\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"test\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://f4t2beecot3ujq6hwv7pveczzq0nqocq.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 201\n    \n- the response is a JSON object"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Duplicate Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Delete account if exists before creating account\r",
+									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.ca\",\r\n    \"username\": \"test\",\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"test\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://f4t2beecot3ujq6hwv7pveczzq0nqocq.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 201\n    \n- the response is a JSON object"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Create User 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 201",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Delete account if exists before creating account\r",
+									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test1@test.ca\",\r\n    \"username\": \"test1\",\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"test\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://f4t2beecot3ujq6hwv7pveczzq0nqocq.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 201\n    \n- the response is a JSON object"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Create User Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405",
+									"pm.test(\"Status code is 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Delete account if exists before creating account\r",
+									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test1@test.ca\",\r\n    \"username\": \"test1\",\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"test\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://f4t2beecot3ujq6hwv7pveczzq0nqocq.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 201\n    \n- the response is a JSON object"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Edit User Duplicate Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 400\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"username\": \"test1\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false,\r\n    \"profilePic\": \"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://myembg75opgf4gylftxdq2uwba0ghbxb.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Edit User Wrong Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 401\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"username\": \"testEditTest\",\r\n    \"password\": \"testInvalid\",\r\n    \"isGoogle\": false,\r\n    \"profilePic\": \"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://myembg75opgf4gylftxdq2uwba0ghbxb.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Edit User Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"testInvalid@test.ca\",\r\n    \"username\": \"testEditTest\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false,\r\n    \"profilePic\": \"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://myembg75opgf4gylftxdq2uwba0ghbxb.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Edit User Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"username\": \"testEditTest\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false,\r\n    \"profilePic\": \"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://myembg75opgf4gylftxdq2uwba0ghbxb.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Edit User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 201\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"username\": \"testEditTest\",\r\n    \"password\": \"test\",\r\n    \"isGoogle\": false,\r\n    \"profilePic\": \"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://myembg75opgf4gylftxdq2uwba0ghbxb.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get User Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"test@test.ca\", \"password\": \"test\", \"isGoogle\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://mtzozkro4lldxudald2pa5gti40yufxq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=testInvalid&isGoogle=false",
+							"protocol": "https",
+							"host": [
+								"mtzozkro4lldxudald2pa5gti40yufxq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "testInvalid"
+								},
+								{
+									"key": "isGoogle",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get User Invalid Google Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "test",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"test@test.ca\", \"password\": \"test\", \"isGoogle\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://mtzozkro4lldxudald2pa5gti40yufxq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=test&isGoogle=true",
+							"protocol": "https",
+							"host": [
+								"mtzozkro4lldxudald2pa5gti40yufxq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
+								},
+								{
+									"key": "isGoogle",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get User Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body(\"{\\\"username\\\": \\\"testEditTest\\\", \\\"profilePic\\\": \\\"https://upload.wikimedia.org/wikipedia/commons/a/a5/Nardwuar1-photo-rgb_NR.jpg\\\"}\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"test@test.ca\", \"password\": \"test\", \"isGoogle\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://mtzozkro4lldxudald2pa5gti40yufxq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=test&isGoogle=false",
+							"protocol": "https",
+							"host": [
+								"mtzozkro4lldxudald2pa5gti40yufxq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
+								},
+								{
+									"key": "isGoogle",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get User Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"test@test.ca\", \"password\": \"test\", \"isGoogle\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://mtzozkro4lldxudald2pa5gti40yufxq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=test&isGoogle=false",
+							"protocol": "https",
+							"host": [
+								"mtzozkro4lldxudald2pa5gti40yufxq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
+								},
+								{
+									"key": "isGoogle",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete User Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca",
+							"protocol": "https",
+							"host": [
+								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "testInvalid@test.ca"
+								}
+							]
+						},
+						"description": "The tests in this request validate that the request body sent as form-data is valid."
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete User Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test1@test.ca",
+							"protocol": "https",
+							"host": [
+								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test1@test.ca"
+								}
+							]
+						},
+						"description": "The tests in this request validate that the request body sent as form-data is valid."
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete User Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test@test.ca",
+							"protocol": "https",
+							"host": [
+								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								}
+							]
+						},
+						"description": "The tests in this request validate that the request body sent as form-data is valid."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favourite Tests",
+			"item": [
+				{
+					"name": "Test Add Favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"ngc\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://imolyxerm4cc73s75gdxrgvsru0dbvzn.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Add Favourite Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"ngc\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://imolyxerm4cc73s75gdxrgvsru0dbvzn.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Add Duplicate Favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 400\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.ca\",\r\n    \"ngc\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://imolyxerm4cc73s75gdxrgvsru0dbvzn.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Add Favourite Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"testInvalid@test.ca\",\r\n    \"ngc\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://imolyxerm4cc73s75gdxrgvsru0dbvzn.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Favourites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body(\"{\\\"favourites\\\": [3]}\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tceb7glsug2n67ra3wggoygy7e0mqdjn.lambda-url.ca-central-1.on.aws/?email=test@test.ca",
+							"protocol": "https",
+							"host": [
+								"tceb7glsug2n67ra3wggoygy7e0mqdjn",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Favourites Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://tceb7glsug2n67ra3wggoygy7e0mqdjn.lambda-url.ca-central-1.on.aws/?email=test@test.ca",
+							"protocol": "https",
+							"host": [
+								"tceb7glsug2n67ra3wggoygy7e0mqdjn",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Favourites Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body(\"{\\\"favourites\\\": []}\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tceb7glsug2n67ra3wggoygy7e0mqdjn.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca",
+							"protocol": "https",
+							"host": [
+								"tceb7glsug2n67ra3wggoygy7e0mqdjn",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "testInvalid@test.ca"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete Favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=test@test.ca&ngc=3",
+							"protocol": "https",
+							"host": [
+								"log7pdtoidp72cwxjkvdxqrou40sqita",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "ngc",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete Favourite Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=carson.may@ucalgary.ca&ngc=3",
+							"protocol": "https",
+							"host": [
+								"log7pdtoidp72cwxjkvdxqrou40sqita",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "carson.may@ucalgary.ca"
+								},
+								{
+									"key": "ngc",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete Favourite Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca&ngc=3",
+							"protocol": "https",
+							"host": [
+								"log7pdtoidp72cwxjkvdxqrou40sqita",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "testInvalid@test.ca"
+								},
+								{
+									"key": "ngc",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Delete Favourite Invalid Favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=test@test.ca&ngc=5",
+							"protocol": "https",
+							"host": [
+								"log7pdtoidp72cwxjkvdxqrou40sqita",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@test.ca"
+								},
+								{
+									"key": "ngc",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Object Tests",
+			"item": [
+				{
+					"name": "Test Create Object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 201",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ngc\": \"1\",\r\n    \"name\": \"test1\",\r\n    \"type\": \"starTest\",\r\n    \"constellation\": \"testConst\",\r\n    \"ra\": 20,\r\n    \"dec\": 20,\r\n    \"magnitude\": 40,\r\n    \"collection\": \"testCol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://zvtie25e7vgrsigaj4rn2a6nbi0uytkj.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 200\n- the response is a JSON object\n- the response has an 'arg' object\n- the response has 'headers' object\n- the response has a 'URL' property"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Create Duplicate Object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ngc\": \"1\",\r\n    \"name\": \"test1\",\r\n    \"type\": \"starTest\",\r\n    \"constellation\": \"testConst\",\r\n    \"ra\": 20,\r\n    \"dec\": 20,\r\n    \"magnitude\": 40,\r\n    \"collection\": \"testCol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://zvtie25e7vgrsigaj4rn2a6nbi0uytkj.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 200\n- the response is a JSON object\n- the response has an 'arg' object\n- the response has 'headers' object\n- the response has a 'URL' property"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Create Object Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405",
+									"pm.test(\"Status code is 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ngc\": \"1\",\r\n    \"name\": \"test1\",\r\n    \"type\": \"starTest\",\r\n    \"constellation\": \"testConst\",\r\n    \"ra\": 20,\r\n    \"dec\": 20,\r\n    \"magnitude\": 40,\r\n    \"collection\": \"testCol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://zvtie25e7vgrsigaj4rn2a6nbi0uytkj.lambda-url.ca-central-1.on.aws/",
+						"description": "The tests in this request validate that:\n\n- the response code is 200\n- the response is a JSON object\n- the response has an 'arg' object\n- the response has 'headers' object\n- the response has a 'URL' property"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get All Objects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://56yw56jkonm2hszz4shn6kkulm0pfoye.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get All Objects Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://56yw56jkonm2hszz4shn6kkulm0pfoye.lambda-url.ca-central-1.on.aws/"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://3qzu5bugmma3n5lebo4fn32vmq0sbqlg.lambda-url.ca-central-1.on.aws/?ngc=1",
+							"protocol": "https",
+							"host": [
+								"3qzu5bugmma3n5lebo4fn32vmq0sbqlg",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "ngc",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Object Wrong Method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 405\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://3qzu5bugmma3n5lebo4fn32vmq0sbqlg.lambda-url.ca-central-1.on.aws/?ngc=1",
+							"protocol": "https",
+							"host": [
+								"3qzu5bugmma3n5lebo4fn32vmq0sbqlg",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "ngc",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Object Invalid NGC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://3qzu5bugmma3n5lebo4fn32vmq0sbqlg.lambda-url.ca-central-1.on.aws/?ngc=-1",
+							"protocol": "https",
+							"host": [
+								"3qzu5bugmma3n5lebo4fn32vmq0sbqlg",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "ngc",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cleanup",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test@test.ca",
+					"protocol": "https",
+					"host": [
+						"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
+						"lambda-url",
+						"ca-central-1",
+						"on",
+						"aws"
+					],
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "test@test.ca"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
