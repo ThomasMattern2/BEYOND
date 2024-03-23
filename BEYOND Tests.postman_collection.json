@@ -85,10 +85,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Delete account if exists before creating account\r",
-									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
-									"    console.log(response.json());\r",
-									"});"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -121,7 +118,7 @@
 								"exec": [
 									"// Validate that the response code should be 201",
 									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(400);",
+									"    pm.response.to.have.status(201);",
 									"});",
 									"",
 									"// Validate that the response is json object",
@@ -138,10 +135,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Delete account if exists before creating account\r",
-									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
-									"    console.log(response.json());\r",
-									"});"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -191,10 +185,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Delete account if exists before creating account\r",
-									"pm.sendRequest(\"https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=carb@carb.ca\", function (err, response) {\r",
-									"    console.log(response.json());\r",
-									"});"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -583,7 +574,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "access_token",
+								"value": "test",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{ \"email\": \"test@test.ca\", \"password\": \"test\", \"isGoogle\": false }",
@@ -610,6 +607,80 @@
 								{
 									"key": "email",
 									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
+								},
+								{
+									"key": "isGoogle",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get User Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 404\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "test",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://mtzozkro4lldxudald2pa5gti40yufxq.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca&password=test&isGoogle=false",
+							"protocol": "https",
+							"host": [
+								"mtzozkro4lldxudald2pa5gti40yufxq",
+								"lambda-url",
+								"ca-central-1",
+								"on",
+								"aws"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "testInvalid@test.ca"
 								},
 								{
 									"key": "password",
@@ -725,7 +796,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca",
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=testInvalid@test.ca&password=test",
 							"protocol": "https",
 							"host": [
 								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
@@ -741,6 +812,10 @@
 								{
 									"key": "email",
 									"value": "testInvalid@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
 								}
 							]
 						},
@@ -773,17 +848,8 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test1@test.ca",
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test1@test.ca&password=test",
 							"protocol": "https",
 							"host": [
 								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
@@ -799,6 +865,10 @@
 								{
 									"key": "email",
 									"value": "test1@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
 								}
 							]
 						},
@@ -841,7 +911,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test@test.ca",
+							"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=test",
 							"protocol": "https",
 							"host": [
 								"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
@@ -857,6 +927,10 @@
 								{
 									"key": "email",
 									"value": "test@test.ca"
+								},
+								{
+									"key": "password",
+									"value": "test"
 								}
 							]
 						},
@@ -1255,7 +1329,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=carson.may@ucalgary.ca&ngc=3",
+							"raw": "https://log7pdtoidp72cwxjkvdxqrou40sqita.lambda-url.ca-central-1.on.aws/?email=test@test.ca&ngc=3",
 							"protocol": "https",
 							"host": [
 								"log7pdtoidp72cwxjkvdxqrou40sqita",
@@ -1270,7 +1344,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "carson.may@ucalgary.ca"
+									"value": "test@test.ca"
 								},
 								{
 									"key": "ngc",
@@ -1524,10 +1598,6 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"// Validate that the response is json object\r",
-									"pm.test(\"Response is a json object\", function () {\r",
-									"    pm.expect(pm.response.json()).to.be.an('object');\r",
-									"});\r",
 									"\r",
 									"\r",
 									""
@@ -1787,6 +1857,38 @@
 		},
 		{
 			"name": "Cleanup",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq.lambda-url.ca-central-1.on.aws/?email=test@test.ca&password=test",
+					"protocol": "https",
+					"host": [
+						"pqzthzbhkepcvdwlrx7zvpgsaa0mjfqq",
+						"lambda-url",
+						"ca-central-1",
+						"on",
+						"aws"
+					],
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "test@test.ca"
+						},
+						{
+							"key": "password",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cleanup Object",
 			"request": {
 				"method": "DELETE",
 				"header": [],

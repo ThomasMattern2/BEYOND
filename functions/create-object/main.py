@@ -7,6 +7,26 @@ dynamodb_resource = boto3.resource("dynamodb")
 # Connect to the specific DynamoDB table we're working with.
 table = dynamodb_resource.Table("beyond-objects")
 
+def exists(ngc):
+    """
+    Checks if an object exists in the DynamoDB table.
+    
+    Parameters:
+    - ngc (int): The NGC number to check in the database.
+    
+    Returns:
+    - bool: True if the object exists, False otherwise.
+    """
+    try:
+        response = table.query(
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('ngc').eq(ngc)
+        )
+        print(response)
+        return len(response['Items']) > 0
+    except Exception as e:
+        print(f"Error querying DynamoDB: {e}")
+        return False
+
 def lambda_handler(event, context):
     """
     Handles incoming HTTP requests to the lambda function.
@@ -44,8 +64,17 @@ def lambda_handler(event, context):
                 "body": json.dumps({"error": "Missing required fields"})
             }
         
+        # Check if the object already exists.
+        if exists(ngc):
+            return {
+                "statusCode": 400,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps({"error": "Object with this NGC already exists"})
+            }
+        
         # Attempt to create the object and respond accordingly.
         try:
+            print(f"Creating object with NGC: {ngc}")
             table.put_item(
                 Item={
                     "ngc": ngc,
@@ -56,16 +85,10 @@ def lambda_handler(event, context):
                     "dec": dec,
                     "magnitude": magnitude,
                     "collection": collection
-                },
-                ConditionExpression='attribute_not_exists(ngc)'  # Ensures ngc does not already exist.
+                }
             )
+            print("Object created successfully")
             response = {"message": "Object created successfully"}
-        except dynamodb_resource.meta.client.exceptions.ConditionalCheckFailedException:
-            return{
-                "statusCode": 400,
-                "headers": {"Content-Type": "application/json"},
-                "error": "Object with this NGC already exists"
-            }
         except Exception as e:
             response = {
                 "statusCode": 500,

@@ -2,6 +2,7 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 import bcrypt
+import requests
 
 # Initialize a DynamoDB resource using the boto3 library.
 dynamodb_resource = boto3.resource("dynamodb")
@@ -65,6 +66,23 @@ def is_username_changed(email, username):
     except ClientError as e:
         print(f"Error querying DynamoDB for username: {e}")
         return False
+
+def authenticate_google_user(access_token):
+    """
+    Verifies if a user is authenticated with Google using the provided access token.
+    
+    Parameters:
+    - access_token (str): The Google OAuth2 access token.
+    
+    Returns:
+    - bool: True if the user is authenticated with Google, False otherwise.
+    """
+    # Prepare the authorization header with the access token.
+    headers = {"Authorization": f"Bearer {access_token}"}
+    # Request to Google's tokeninfo endpoint to validate the access token.
+    response = requests.get("https://oauth2.googleapis.com/tokeninfo", headers=headers)
+    # If the response status code is 200, the token is valid.
+    return response.status_code == 200
 
 def authenticate_user(given_password, stored_password):
     """
@@ -162,19 +180,35 @@ def lambda_handler(event, context):
                 'statusCode': 400,
                 'body': json.dumps({'error': 'Email, username, password, first name, isGoogle, or last name parameter is missing'})
             }
+        
+        # Query the user with the provided email.
+        response = user_query(email)
+
         # Check if the email already exists in the database.
-        if not email_exists(email):
+        if len(response) == 0:
             return {
                 'statusCode': 404,
                 'body': json.dumps({'error': 'Email does not exist'})
             }
-        # Check if the user is not a Google user and the password is correct.
-        if not isGoogle:
-            hashed_password = user_query(email)[0]['password']
-            if not authenticate_user(password, hashed_password) or user_query(email)[0]['isGoogle']:
+        if isGoogle:
+            # Handle Google authentication.
+            access_token = event["headers"]["access_token"]
+            if not authenticate_google_user(access_token):
+                # Google authentication failed.
                 return {
-                    'statusCode': 401,
-                    'body': json.dumps({'error': 'Invalid password'})
+                    "statusCode": 401,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps({"error": "Invalid access token"})
+                }
+        else:
+            # Handle regular password authentication.
+            hashed_password = response[0].get('password')
+            if not authenticate_user(password, hashed_password) or response[0].get('isGoogle'):
+                # Password does not match or the account is a Google account.
+                return {
+                    "statusCode": 401,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps({"error": "Incorrect password or Google account required"})
                 }
         # Attempt to create the user and respond accordingly.
         if edit_user(email, username, profilePic):
