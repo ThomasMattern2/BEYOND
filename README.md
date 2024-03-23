@@ -1,15 +1,14 @@
-# BEYOND
+<h1 align="center">
+	<img
+		width="300"
+		alt="BEYOND logo with planet as the O"
+		src="media/BEYOND%20Light%20Mode.png"
+  >
+</h1>
 
-To provide users with information regarding space such as stars, planets, nebulae, galaxies, etc. Allow users to input newly discovered sky objects to add to the database. Users can look up groups of objects based on date, constellation, magnitude, etc. This repository contains the backend code of our project.
-
-Group Members:
-- Alessandro Baldassarre
-- Rita Boury
-- Feranmi Falade
-- Chantae Ho
-- Isaac Hus
-- Thomas Mattern 
-- Carson May
+<h3 align="center">
+	Backend repository for the BEYOND space catalog web application
+</h3>
 
 ## Setup
 You will need to have terraform installed on your machine and an AWS account.
