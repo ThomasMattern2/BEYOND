@@ -98,7 +98,6 @@ def lambda_handler(event, context):
         print(event)
         query = parse_qs(event["rawQueryString"])
         email = query.get('email')[0]
-        password = query.get('password')[0]
 
         print(query)
 
@@ -131,6 +130,7 @@ def lambda_handler(event, context):
                     "body": json.dumps({"error": "Invalid access token"})
                 }
         else:
+            password = query.get('password')[0]
             # Handle regular password authentication.
             hashed_password = user[0].get('password')
             if not authenticate_user(password, hashed_password) or user[0].get('isGoogle'):
