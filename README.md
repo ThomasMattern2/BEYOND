@@ -11,11 +11,11 @@
 </h3>
 
 <p align="center">
-	View our frontend repository at <a href="https://github.com/ensf401-beyond/beyond-fe">https://github.com/ensf401-beyond/beyond-fe</a>
+	View our deployed site at <a href="https://beyond-the-stars.netlify.app/">https://beyond-the-stars.netlify.app/</a>
 </p>
 
 <p align="center">
-	View our deployed site at <a href="https://beyond-the-stars.netlify.app/">https://beyond-the-stars.netlify.app/</a>
+	View our frontend repository at <a href="https://github.com/ensf401-beyond/beyond-fe">https://github.com/ensf401-beyond/beyond-fe</a>
 </p>
 
 ## Setup
