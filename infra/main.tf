@@ -672,3 +672,60 @@ resource "aws_lambda_function_url" "edit-user-url" {
 output "edit-user-lambda_url" {
   value = aws_lambda_function_url.edit-user-url.function_url
 }
+
+# delete-object resources
+
+resource "aws_iam_role" "delete-object" {
+  name                = "iam-for-lambda-delete-object"
+  assume_role_policy  = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "lambda.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+  }
+]
+}
+EOF
+}
+
+resource "aws_lambda_function" "delete-object" {
+  role          = aws_iam_role.delete-object.arn
+  function_name = "delete-object"
+  handler       = local.lambda_handler
+  filename      = "../functions/delete-object/dist/delete-object.zip"
+
+  runtime = "python3.12"
+}
+
+resource "aws_iam_role_policy_attachment" "delete-object_logs" {
+  role       = aws_iam_role.delete-object.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "delete-object_dynamo" {
+  role       = aws_iam_role.delete-object.name
+  policy_arn = aws_iam_policy.dynamo.arn
+}
+
+resource "aws_lambda_function_url" "delete-object-url" {
+  function_name      = aws_lambda_function.delete-object.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["DELETE"]
+    allow_headers     = ["*"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+output "delete-object-lambda_url" {
+  value = aws_lambda_function_url.delete-object-url.function_url
+}

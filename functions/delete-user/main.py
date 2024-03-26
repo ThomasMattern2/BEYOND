@@ -2,11 +2,65 @@ import json
 from urllib.parse import parse_qs
 import boto3
 from botocore.exceptions import ClientError
+import bcrypt
+import requests
 
 # Initialize a DynamoDB resource using the boto3 library.
 dynamodb_resource = boto3.resource("dynamodb")
 # Connect to the specific DynamoDB table we're working with.
 table = dynamodb_resource.Table("beyond-users")
+
+def user_query(email):
+    """
+    Queries the DynamoDB table for a user with the specified email.
+    
+    Parameters:
+    - email (str): The email to query for.
+    
+    Returns:
+    - list: A list of items (users) matching the query. Empty if no user found.
+    """
+    try:
+        # Scan the table for items with the specified email.
+        response = table.scan(
+            FilterExpression='email = :email',
+            ExpressionAttributeValues={':email': email}
+        )
+        return response['Items']
+    except ClientError as e:
+        print(f"Error querying DynamoDB: {e}")
+        return []
+    
+def authenticate_google_user(access_token):
+    """
+    Verifies if a user is authenticated with Google using the provided access token.
+    
+    Parameters:
+    - access_token (str): The Google OAuth2 access token.
+    
+    Returns:
+    - bool: True if the user is authenticated with Google, False otherwise.
+    """
+    # Prepare the authorization header with the access token.
+    headers = {"Authorization": f"Bearer {access_token}"}
+    # Request to Google's tokeninfo endpoint to validate the access token.
+    response = requests.get("https://oauth2.googleapis.com/tokeninfo", headers=headers)
+    # If the response status code is 200, the token is valid.
+    return response.status_code == 200
+
+def authenticate_user(given_password, stored_password):
+    """
+    Verifies if the provided password matches the stored hashed password.
+    
+    Parameters:
+    - given_password (str): The password provided by the user.
+    - stored_password (str): The hashed password stored in the database.
+    
+    Returns:
+    - bool: True if the passwords match, False otherwise.
+    """
+    # Use bcrypt to compare the given password with the stored hashed password.
+    return bcrypt.checkpw(given_password.encode('utf-8'), stored_password.encode('utf-8'))
 
 def exists(email):
     """
@@ -60,6 +114,32 @@ def lambda_handler(event, context):
                 'statusCode': 404,
                 'body': json.dumps({'error': 'User not found'})  # Email not found
             }
+        
+        # Query user info 
+        user = user_query(email)
+
+        # Check if user is google user, if so proceed with google auth, otherwise check password
+        if user[0].get('isGoogle'):
+            # Handle Google authentication.
+            access_token = event["headers"]["access_token"]
+            if not authenticate_google_user(access_token):
+                # Google authentication failed.
+                return {
+                    "statusCode": 401,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps({"error": "Invalid access token"})
+                }
+        else:
+            password = query.get('password')[0]
+            # Handle regular password authentication.
+            hashed_password = user[0].get('password')
+            if not authenticate_user(password, hashed_password) or user[0].get('isGoogle'):
+                # Password does not match or the account is a Google account.
+                return {
+                    "statusCode": 401,
+                    "headers": {"Content-Type": "application/json"},
+                    "body": json.dumps({"error": "Incorrect password or Google account required"})
+                }
 
         try:
             # Attempt to delete the user with the given email.

@@ -83,10 +83,9 @@ def lambda_handler(event, context):
         email = query.get('email')
         password = query.get('password')
         isgoogle = query.get('isGoogle')
-
         # Query the user using the provided email.
         response = user_query(email)
-        if not response:
+        if len(response) == 0:
             # No user found with the provided email.
             return {
                 "statusCode": 404,
@@ -125,7 +124,7 @@ def lambda_handler(event, context):
                 })
         }
     else:
-        # If the request method is not GET, return a 404 error.
+        # If the request method is not GET, return a 405 error.
         return {
             "statusCode": 405,
             "headers": {"Content-Type": "application/json"},
